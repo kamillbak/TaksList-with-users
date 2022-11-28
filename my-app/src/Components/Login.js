@@ -5,8 +5,8 @@ import { useState } from "react";
 export default function Login() {
 
   const initialFormData = Object.freeze({
-    us_name: "----",
-    pass: "****",
+    us_name: "",
+    pass: "",
   });
 
   const [formData, setFormData] = useState(initialFormData);
@@ -22,16 +22,15 @@ export default function Login() {
     e.preventDefault();
 
     const loginData = {
-      us_name: formData.us_name ,
+      us_name: formData.us_name,
       pass: formData.pass
     };
 
-    console.log(loginData);
 
     const url = Costants.API_URL_LOGIN;
 
     console.log(url);
-
+    console.log(loginData);
     //fetch
     fetch(url, {
       method: 'POST',
@@ -43,11 +42,19 @@ export default function Login() {
       .then(response => response.json())
       .then(responseFromServer => {
         console.log(responseFromServer);
+        // session storage info 
+        localStorage.setItem('isUserLoggedIn', true);
+        localStorage.setItem('userLoggedIn_id', responseFromServer.userId);
+        localStorage.setItem('userLoggedIn_username', responseFromServer.userName);
       })
+      .then (() => {
+        window.location.href = "/"
+      }) //move to home page
       .catch((error) => {
         console.log(error);
         alert(error);
       })
+        
   };
 
 

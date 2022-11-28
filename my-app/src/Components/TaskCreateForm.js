@@ -3,6 +3,8 @@ import Costants from '../utilities/Constants'
 
 export default function TaskCreateForm(props) {
 
+    var userLoggedIn_id =localStorage.getItem('userLoggedIn_id');
+
     const initialFormData = Object.freeze({
         name: "task",
         priority: 5,
@@ -27,7 +29,7 @@ export default function TaskCreateForm(props) {
             priority: formData.priority,
             description: formData.description,
             isDone: false,
-            userId: 1 // póki co 1, ale potem zmienimy na id zalogowanego
+            userId: userLoggedIn_id //  id zalogowanego
         };
 
         console.log(taskToCreate);

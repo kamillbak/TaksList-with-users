@@ -5,9 +5,9 @@ import { useState } from "react";
 export default function Registration() {
 
   const initialFormData = Object.freeze({
-    userName: "name",
-    password: 1234,
-    email: "NAME@gmail.com",
+    userName: "",
+    password: "",
+    email: "@gmail.com",
   });
 
   const [formData, setFormData] = useState(initialFormData);
@@ -27,7 +27,7 @@ export default function Registration() {
     const userToRegister = {
       userId: 0,
       userName: formData.userName,
-      password: formData.password.toString(),
+      password: formData.password,
       email: formData.email,
     };
 
@@ -54,7 +54,8 @@ export default function Registration() {
         console.log(error);
         alert(error);
       })
-    // props.onUserCreated();  
+     
+    window.location.href = "/login";   //move to login page
   };
 
 

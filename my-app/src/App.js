@@ -1,9 +1,6 @@
 import React from "react";
 
 
-import TaskCreateForm from "./Components/TaskCreateForm";
-import TaskUpdateForm from "./Components/TaskUpdateForm";
-
 import { BrowserRouter, Routes, Route } from "react-router-dom"; //r 
 import Login from "./Components/Login"; //r 
 import Registration from "./Components/Registration"; //r 
@@ -17,9 +14,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navbar />}>
+        <Route path="/" element={<Navbar/>}>
           <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
+          <Route path="login" element={<Login/>} />
           <Route path="register" element={<Registration />} />
           <Route path="*" element={<NoPage />} />
         </Route>
