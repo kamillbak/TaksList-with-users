@@ -3,7 +3,7 @@ import Costants from '../utilities/Constants'
 
 export default function TaskCreateForm(props) {
 
-    var userLoggedIn_id =localStorage.getItem('userLoggedIn_id');
+    var userLoggedIn_id =sessionStorage.getItem('userLoggedIn_id');
 
     const initialFormData = Object.freeze({
         name: "task",
@@ -22,6 +22,22 @@ export default function TaskCreateForm(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if(formData.name === "")
+        {
+          alert("Name can't be empty");
+          return;
+        }
+        if(formData.priority === "")
+        {
+          alert("priority can't be empty");
+          return;
+        }
+        if(formData.description === "")
+        {
+          alert("description can't be empty");
+          return;
+        }
 
         const taskToCreate = {
             id: 0,

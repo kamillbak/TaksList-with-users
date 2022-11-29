@@ -21,6 +21,22 @@ export default function TaskUpdateForm(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        if(formData.name === "")
+        {
+          alert("Name can't be empty");
+          return;
+        }
+        if(formData.priority === "")
+        {
+          alert("priority can't be empty");
+          return;
+        }
+        if(formData.description === "")
+        {
+          alert("description can't be empty");
+          return;
+        }
+
         const taskToUpdate = {
             taskId: props.task.taskId,
             name: formData.name,

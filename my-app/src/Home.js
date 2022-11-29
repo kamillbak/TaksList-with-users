@@ -14,14 +14,14 @@ function Home() {
   const [userLoggedIn, setuserLoggedIn] = useState(false);
 
   useEffect(() => {
-    const userLogged = localStorage.getItem('isUserLoggedIn');
+    const userLogged = sessionStorage.getItem('isUserLoggedIn');
     if (userLogged) {
       setuserLoggedIn(true);
     }
   }, [])
 
   function getTasks() {
-    var id = localStorage.getItem('userLoggedIn_id');
+    var id = sessionStorage.getItem('userLoggedIn_id');
     console.log(id);
     const url = `https://localhost:7073/api/Tasks/${id}`;
 
@@ -61,44 +61,48 @@ function Home() {
     if (!taskToUpdate.isDone) // if task is not done yet
     {
       taskToUpdate.isDone = true; // mark task as done 
-      const url = Costants.API_URL_UPDATE_POST; //update url 
-
-      //fetch method
-      fetch(url, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(taskToUpdate)
-      })
-        .then(() => {
-          onTaskDone(taskToUpdate.name)
-        })
-        .catch((error) => {
-          console.log(error);
-          alert(error);
-        })
     }
     else {
-      alert("Task is already done");
+      taskToUpdate.isDone = false; // mark task as not done 
     }
+
+    const url = Costants.API_URL_UPDATE_POST; //update url 
+
+    //fetch method
+    fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(taskToUpdate)
+    })
+      .then(() => {
+        onTaskDone()
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      })
+
   }
 
   return (
-    <div className="container text-white " style={{
-      backgroundImage: `url("https://gallery.yopriceville.com/var/albums/Free-Clipart-Pictures/School-Clipart/School_Board_Background-1786472469.png?m=1499396101")`,
-      backgroundPosition: 'center',
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat',
-      width: '100vw',
-      height: '100vh'
-    }}>
+    //  photo background 
+    // <div className="container text-white " style={{
+    //   backgroundImage: `url("https://gallery.yopriceville.com/var/albums/Free-Clipart-Pictures/School-Clipart/School_Board_Background-1786472469.png?m=1499396101")`,
+    //   backgroundPosition: 'center',
+    //   backgroundSize: 'cover',
+    //   backgroundRepeat: 'no-repeat',
+    //   width: '100vw',
+    //   height: '100vh'
+    // }}>
+    <div className="container">
       {(userLoggedIn && showingCreatingTaskForm === false && taskCurrentlyBeingUpdated === null) && (
         <div>
           <div >
             <br />
             <br />
-            <h1 className="text-center"> Hello <b>{localStorage.getItem('userLoggedIn_username')}</b>  </h1>
+            <h1 className="text-center"> Hello <b>{sessionStorage.getItem('userLoggedIn_username')}</b>  </h1>
             <br />
             <h4 className="text-center ">Let's work a little on your tasks and make them all green </h4>
           </div>
@@ -212,9 +216,7 @@ function Home() {
     getTasks();
   }
 
-  function onTaskDone(name) {
-    console.log("Task done")
-    alert(`Task "${name}" is done. Conratulations!`);
+  function onTaskDone() {
     getTasks();
   }
 

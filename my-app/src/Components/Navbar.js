@@ -8,7 +8,7 @@ const Navbar = () => {
     const [userLoggedIn, setuserLoggedIn] = useState(false);
 
     useEffect(() => {
-        const userLogged = localStorage.getItem('isUserLoggedIn');
+        const userLogged = sessionStorage.getItem('isUserLoggedIn');
         if(userLogged) {
             setuserLoggedIn(true);
         }
@@ -16,12 +16,12 @@ const Navbar = () => {
 
 
     function logoutUser() {
-        // localStorage.setItem('isUserLoggedIn', false);
-        // localStorage.setItem('userLoggedIn_id', 0);
-        // localStorage.setItem('userLoggedIn_username', "");
+        // sessionStorage.setItem('isUserLoggedIn', false);
+        // sessionStorage.setItem('userLoggedIn_id', 0);
+        // sessionStorage.setItem('userLoggedIn_username', "");
         //alert('Logout successful');
         //window.location.reload(false);
-        localStorage.clear();
+        sessionStorage.clear();
       }
 
     return (

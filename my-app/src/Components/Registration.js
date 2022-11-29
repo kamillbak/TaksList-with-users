@@ -7,10 +7,12 @@ export default function Registration() {
   const initialFormData = Object.freeze({
     userName: "",
     password: "",
-    email: "@gmail.com",
+    passwordConf: "",
+    email: ""
   });
 
   const [formData, setFormData] = useState(initialFormData);
+  const [isUserNameFree, setisUserNameFree] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -19,10 +21,63 @@ export default function Registration() {
     });
   };
 
-  //
+  // check if username is free function
+  const isUsernameFree = (userNam) => {
+    let users = [];
+    var userFromDB;
+
+    const url = 'https://localhost:7073/api/Users';
+
+    fetch(url, {
+      method: 'GET'
+    })
+      .then(r => r.json())
+      .then(usersFrmServer => {
+        users = usersFrmServer;
+      })
+      .then(() => {
+        userFromDB = users.find(u => u.userName === userNam);
+        console.log(userFromDB);
+        if (typeof  userFromDB === 'undefined') {
+          setisUserNameFree(true);
+        }
+        else {
+          setisUserNameFree(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      })
+
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (formData.password !== formData.passwordConf) {
+      alert('Passwords are different');
+      return;
+    }
+
+    if (formData.userName === "") {
+      alert("Username can't be empty");
+      return;
+    }
+
+    if (formData.email === "") {
+      alert("Email can't be empty");
+      return;
+    }
+
+    //check if username is free
+    isUsernameFree()
+    const x = isUserNameFree;
+
+    if (!x) {
+      alert("Username already exist");
+      return;
+    }
 
     const userToRegister = {
       userId: 0,
@@ -50,15 +105,14 @@ export default function Registration() {
       .then(responseFromServer => {
         console.log(responseFromServer);
       })
+      .then(() => {
+        window.location.href = "/login";//move to login page
+      })
       .catch((error) => {
         console.log(error);
         alert(error);
       })
-     
-    window.location.href = "/login";   //move to login page
   };
-
-
 
   return (
     <form className='w-100 px-5'>
@@ -76,7 +130,12 @@ export default function Registration() {
 
       <div className='mt-4'>
         <label className='h3 form-label'> password </label>
-        <input value={formData.password} name="password" type="text" className='form-control' onChange={handleChange} />
+        <input value={formData.password} name="password" type="password" className='form-control' onChange={handleChange} />
+      </div>
+
+      <div className='mt-4'>
+        <label className='h3 form-label'> confirm password </label>
+        <input value={formData.passwordConf} name="passwordConf" type="password" className='form-control' onChange={handleChange} />
       </div>
 
       <br />
@@ -85,7 +144,6 @@ export default function Registration() {
       <button className="btn btn-dark">Cancel</button>
     </form>
   )
-
 
 };
 
